@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="box"></div>
+    <input id="newfood" type="text">
+    <input id="newprice" type="text">
+    <button id="btn">Click</button>
+    <select
+    id="productSelect"
+    name="productSelect"
+    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+  ></select>
+
+    <div id="productGroup"></div>
+    <template id="productTemplate">
+        <div class="border p-5 mb-3 rounded flex justify-between items-center">
+          <p class="product-name text-gray-600"></p>
+          <p class="product-price text-gray-400"></p>
+        </div>
+    </template>
+
+    <script>
+        const products = [
+          {
+            id: 1,
+            name: "apple",
+            price: 500,
+          },
+          {
+            id: 2,
+            name: "orange",
+            price: 600,
+          },
+          {
+            id: 3,
+            name: "Mango",
+            price: 1000,
+          },
+          {
+            id: 4,
+            name: "Banana",
+            price: 200,
+          },
+        ];
+
+        const productTemplate = document.getElementById("productTemplate");
+        const productSelect = document.querySelector("#productSelect");
+        const productGroup = document.querySelector("#productGroup");
+
+        const createProduct = ({ name, price }) => {
+          const card = productTemplate.content.cloneNode(true);
+          card.querySelector(".product-name").innerText = name;
+          card.querySelector(".product-price").innerText = price;
+          return card;
+        };
+
+        const productRender = () => {
+          products.forEach(({ name, id, price }) => {
+            productSelect.append(new Option(name, id));
+            productGroup.append(createProduct({ name, price }));
+          });
+        };
+
+        const btn = document.getElementById("btn");
+        const newfood = document.getElementById("newfood");
+        const newprice = document.getElementById("newprice");
+
+        btn.addEventListener("click", () => {
+          const newProduct = {
+            id: products.length + 1,
+            name: newfood.value,
+            price: parseFloat(newprice.value),
+          };
+
+          products.push(newProduct);
+          productSelect.append(new Option(newProduct.name, newProduct.id));
+          productGroup.append(createProduct(newProduct));
+        });
+
+        productRender();
+    </script>
+</body>
+</html>
